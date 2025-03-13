@@ -1,0 +1,65 @@
+﻿@using CrudSlice.Model
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.DataForm
+@using Syncfusion.Blazor.Buttons
+@inject ITemplateClassDtoEntityService service
+
+
+<SfGrid TValue="TemplateClassDTO" @ref=Grid DataSource="dataSource" Toolbar="@(new List<string>() { "Add", "Edit","Delete", "Update", "Cancel" })" Height="315">
+    <GridEvents OnActionBegin="ActionBeginHandler" OnActionComplete="ActionCompleteHandler" TValue="TemplateClassDTO"></GridEvents>
+    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog">
+    </GridEditSettings>
+</SfGrid>
+
+
+
+
+@code {
+    public List<TemplateClassDTO> dataSource { get; set; }
+    public SfGrid<TemplateClassDTO> Grid { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var ds = await service.GetAll();
+        dataSource = ds;
+
+    }
+    public async void ActionBeginHandler(ActionEventArgs<TemplateClassDTO> Args)
+    {
+        if (Args.Action == "Add")
+        {
+            await service.Insert(Args.Data);
+            dataSource = await service.GetAll();
+            await Grid.CloseEditAsync();
+        }
+        if (Args.Action == "Edit")
+        {
+
+            await service.Update(Args.Data);
+            dataSource = await service.GetAll();
+            await Grid.CloseEditAsync();
+
+        }
+        if (Args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Delete))
+        {
+            await service.Delete(Args.Data.Id);
+            dataSource = await service.GetAll();
+        }
+    }
+    public async void ActionCompleteHandler(ActionEventArgs<TemplateClassDTO> Args)
+    {
+        if (Args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
+        {
+            dataSource = await service.GetAll();
+        }
+    }
+    public async Task CancelEdit()
+    {
+        await Grid.CloseEditAsync();
+    }
+
+}

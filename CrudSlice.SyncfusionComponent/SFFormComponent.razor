@@ -1,0 +1,52 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using CrudSlice.Model
+@using Microsoft.AspNetCore.Components.Forms
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.DataForm
+
+@inject ITemplateClassDtoEntityService service
+
+
+<SfDataForm ID="MyForm" @ref=DataFormInstance
+Model="@dataItem"
+EditContext="employeeDetailsContext"
+FormName="EmpDet">
+    <FormValidator>
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+    </FormValidator>
+    <FormItems>
+        <FormAutoGenerateItems></FormAutoGenerateItems>
+    </FormItems>
+    <FormButtons>
+        <SfButton typeof="submit" OnClick="ClickHandler">Register </SfButton>
+    </FormButtons>
+</SfDataForm>
+
+@code {
+    private TemplateClassDTO dataItem { get; set; }
+    EditContext employeeDetailsContext { get; set; }
+    SfDataForm DataFormInstance { get; set; }
+    protected override Task OnInitializedAsync()
+    {
+        dataItem = new TemplateClassDTO() { Email = "mcnaboe@live.com", DOB = DateTime.Now, };
+        employeeDetailsContext = new EditContext(dataItem);
+        return base.OnInitializedAsync();
+    }
+
+    public void OnValidSubmitHandler()
+    {
+        var x = 1;
+        // Here, you can include your required logic.
+    }
+
+    public void ClickHandler()
+    {
+        service.Insert(new TemplateClassDTO() { DOB = this.dataItem.DOB, Email = this.dataItem.Email, FirstName = this.dataItem.FirstName, LastName = this.dataItem.LastName });
+        // the below method can be invoked wherever neccessary to submit the form manually.
+        DataFormInstance?.IsValid();
+    }
+}

@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+	
+		
+	<ItemGroup>
+		<PackageReference Include="Riok.Mapperly" Version="4.2.0-next.0" />
+	</ItemGroup>
+	
+
+  <ItemGroup>
+    <ProjectReference Include="..\CrudSlice.Entity\CrudSlice.Entity.csproj" />
+    <ProjectReference Include="..\CrudSlice.Model\CrudSlice.Model.csproj" />
+    <ProjectReference Include="..\Foundation.DataObjectController\Foundation.DataObjectController.csproj" />
+    <ProjectReference Include="..\Foundation.DataObjectServer\Foundation.DataObjectServer.csproj" />
+    <ProjectReference Include="..\Foundation.DataObject\Foundation.DataObject.csproj" />
+  </ItemGroup>
+
+</Project>
